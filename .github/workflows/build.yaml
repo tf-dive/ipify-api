@@ -1,4 +1,4 @@
-name: ipify-api for LEVVELS
+name: ipify-api
 
 on:
   push:
@@ -28,6 +28,9 @@ jobs:
     - name: Install packages
       run: |
         go mod vendor
+    
+    - name: Build
+      run: |
         go build -o bin/ipify-api .
     
     - name: Log in to the GitHub Container Registry
