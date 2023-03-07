@@ -4,7 +4,7 @@ FROM debian
 RUN useradd app
 WORKDIR /home/app
 
-COPY ipify-api ./
+COPY bin/ipify-api ./
 
 ENV LOGGING_LEVEL WARNING
 
