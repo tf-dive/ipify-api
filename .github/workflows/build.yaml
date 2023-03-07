@@ -9,6 +9,9 @@ jobs:
   build-ipify-api:
     runs-on: ubuntu-latest
 
+    outputs:
+      digest: ${{ steps.docker_build.outputs.digest }}
+
     permissions:
       contents: read
       packages: write
@@ -47,6 +50,7 @@ jobs:
           type=semver,pattern={{ version }}
 
     - name: Build image and publish to registry
+      id: docker_build
       uses: docker/build-push-action@v3
       with:
         context: .
@@ -76,9 +80,9 @@ jobs:
       - name: Update Kubernetes resources
         run: |
           pwd
-          echo ghcr.io/tf-dive/ipify-api@\${{ needs.cicd.outputs.digest }}
+          echo ghcr.io/tf-dive/ipify-api@\${{ needs.build-ipify-api.outputs.digest }}
           cd kubekube/dev/recipes/ns-platform/ipify-api/overlays
-          kustomize edit set image ghcr.io/tf-dive/ipify-api@\${{ needs.cicd.outputs.digest }}
+          kustomize edit set image ghcr.io/tf-dive/ipify-api@\${{ needs.build-ipify-api.outputs.digest }}
           cat kustomization.yaml
       # 수정된 파일 commit & push
       - name: Commit minifest files
@@ -86,5 +90,5 @@ jobs:
           cd kubekube
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git commit -am "Update ipify-api image tag(${{ needs.build-web.outputs.digest }})"
+          git commit -am "Update ipify-api image tag(${{ needs.build-ipify-api.outputs.digest }})"
           git push -u origin main
