@@ -41,7 +41,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ghcr.io/tf-dive/${{ matrix.app }}
+        images: ghcr.io/tf-dive/ipify-api
         tags: |
           type=raw,value=dev
           type=semver,pattern={{ version }}
@@ -50,7 +50,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        file: ${{ matrix.app }}.Dockerfile
+        file: ./Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
