@@ -49,6 +49,7 @@ jobs:
     - name: Build image and publish to registry
       uses: docker/build-push-action@v3
       with:
+        context: .
         push: true
         file: ./Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
