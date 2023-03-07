@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  cicd:
+  build-ipify-api:
     runs-on: ubuntu-latest
 
     permissions:
@@ -28,7 +28,7 @@ jobs:
     - name: Install packages
       run: |
         go mod vendor
-        go build
+        go build -o bin/ipify-api .
     
     - name: Log in to the GitHub Container Registry
       uses: docker/login-action@v1
