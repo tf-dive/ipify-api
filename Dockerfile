@@ -1,4 +1,4 @@
-FROM debian
+FROM golang:1.20
 
 # Non-root user `app`
 RUN useradd app
